@@ -14,12 +14,12 @@ def print_board(grid): # print the table
     for a in grid:
         print(a)
 
-def get_random_board(n, p=0.2): # return n x n table where each cell is alive with probability 0.2
+def get_random_board(n): # return n x n table where each cell is alive with probability 0.2
     board = get_empty_board(n)
     for i in range(n):
         for j in range(n):
             random_element = random.random()
-            if random_element <= p:
+            if random_element <= args.prob:
                 board[i][j] = 1
             else:
                 board[i][j] = 0
@@ -108,7 +108,7 @@ def step(board): # return board at the next timestep
     return board1
 
 def run_game_of_life(board):
-    for _ in range(20):    # run for 20 steps
+    for _ in range(args.steps):    # run for 20 steps
         os.system('clear')    # clear the output
         print_board(board)          # print the board
         time.sleep(0.5)               # wait for half a second
@@ -116,16 +116,17 @@ def run_game_of_life(board):
         board = new_board 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--size", "-s", type=int, default=10, help="Size of the board")
-parser.add_argument("--prob", "-p", type=float, default=0.2, help="Probability of a cell being alive")
-parser.add_argument("--steps", "-n", type=int, default=20, help="Number of steps to run the simulation for")
+parser.add_argument("--size", "-s", type=int, default=20, help="Size of the board")
+parser.add_argument("--prob", "-p", type=float, default=0.3, help="Probability of a cell being alive")
+parser.add_argument("--steps", "-n", type=int, default=40, help="Number of steps to run the simulation for")
 
 args = parser.parse_args()
 args.size   # this will contain the size of the board
 args.prob   # this will contain the probability of a cell being alive
 args.steps  # this will contain the number of steps to run the simulation for
 
-#table = get_random_board(10)
-table = get_empty_board(10)
-table = add_glider(table)
-run_game_of_life(table)
+# Specify the table
+table = get_random_board(args.size)
+#table = get_empty_board(10)
+#table = add_glider(table)
+run_game_of_life(table) # Start the game
